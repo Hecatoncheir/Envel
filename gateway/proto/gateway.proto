@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "proto;proto";
+
+import "google/api/annotations.proto";
+
+message Request {
+  string Message = 1 [json_name="Message"];
+  string Details = 2 [json_name="Details"];
+}
+
+message Response {
+  string Message = 1 [json_name="Message"];
+  string Details = 2 [json_name="Details"];
+}
+
+service Gateway {
+  rpc ApiVersion (Request) returns (Response) {
+    option (google.api.http).get = "/api/version";
+  }
+
+  rpc Stream(stream Request) returns (stream Response) {
+    option (google.api.http) = {get: "/ws"};
+  }
+}
